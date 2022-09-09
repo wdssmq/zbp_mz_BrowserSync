@@ -61,7 +61,12 @@ require $blogpath . 'zb_system/admin/admin_top.php';
         <tr>
           <td>监视文件</td>
           <td><?php zbpform::textarea("fileTypes", htmlspecialchars($zbp->Config("mz_BrowserSync")->fileTypes), "90%"); ?></td>
-          <td><pre><?php echo file_get_contents(mz_BrowserSync_Path('v-fileTypes'));?></pre></td>
+          <td>留空时使用以下值：<pre><?php echo file_get_contents(mz_BrowserSync_Path('v-fileTypes'));?></pre></td>
+        </tr>
+        <tr>
+          <td>排除文件</td>
+          <td><?php zbpform::textarea("ignoreList", htmlspecialchars($zbp->Config("mz_BrowserSync")->ignoreList), "90%"); ?></td>
+          <td>需要显示指定，以下仅为示例：<pre><?php echo "**/bin/*.*\n**/cache/*.*";?></pre></td>
         </tr>
         <tr>
           <td></td>

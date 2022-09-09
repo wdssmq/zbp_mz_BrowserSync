@@ -42,12 +42,14 @@ function mz_BrowserSync_BuildConsole()
   // 获取文件类型
   $defFileTypes = file_get_contents(mz_BrowserSync_Path('v-fileTypes'));
   $fileTypes = $zbp->Config('mz_BrowserSync')->fileTypes;
+  $ignoreList = $zbp->Config('mz_BrowserSync')->ignoreList;
   if (empty($fileTypes)) {
     $fileTypes = $defFileTypes;
   }
   $arrLog["fileTypes-plugin"] = mz_BrowserSync_GenFileTypes($fileTypes, "plugin");
   $arrLog["fileTypes-theme"] = mz_BrowserSync_GenFileTypes($fileTypes, "theme");
   $arrLog["fileTypes"] = mz_BrowserSync_GenFileTypes($fileTypes);
+  $arrLog["ignoreList"] = $ignoreList;
 
   return strtr($console, $arrLog);
 }
