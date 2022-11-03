@@ -17,6 +17,11 @@ $suc = GetVars('suc', 'GET');
 if ($act == 'save') {
   CheckIsRefererValid();
   foreach ($_POST as $key => $val) {
+    if ($key === "ZC_ADDITIONAL_SECURITY") {
+      $zbp->option['ZC_ADDITIONAL_SECURITY'] = $val;
+      $zbp->SaveOption();
+      continue;
+    }
     if (substr($key, 0, 5) == 'read_') {
       continue;
     }
@@ -61,12 +66,23 @@ require $blogpath . 'zb_system/admin/admin_top.php';
         <tr>
           <td>监视文件</td>
           <td><?php zbpform::textarea("fileTypes", htmlspecialchars($zbp->Config("mz_BrowserSync")->fileTypes), "90%"); ?></td>
-          <td>留空时使用以下值：<pre><?php echo file_get_contents(mz_BrowserSync_Path('v-fileTypes'));?></pre></td>
+          <td>留空时使用以下值：
+            <pre><?php echo file_get_contents(mz_BrowserSync_Path('v-fileTypes')); ?></pre>
+          </td>
         </tr>
         <tr>
           <td>排除文件</td>
           <td><?php zbpform::textarea("ignoreList", htmlspecialchars($zbp->Config("mz_BrowserSync")->ignoreList), "90%"); ?></td>
-          <td>需要显示指定，以下仅为示例：<pre><?php echo "**/bin/*.*\n**/cache/*.*";?></pre></td>
+          <td>需要显示指定，以下仅为示例：
+            <pre><?php echo "**/bin/*.*\n**/cache/*.*\n**/usr/*.*"; ?></pre>
+          </td>
+        </tr>
+        <tr>
+          <td>安全增强</td>
+          <td colspan="2">
+            <?php zbpform::zbradio("ZC_ADDITIONAL_SECURITY", $zbp->option['ZC_ADDITIONAL_SECURITY']); ?>
+            <strong>←需要该选项保持关闭；</strong>
+          </td>
         </tr>
         <tr>
           <td></td>
