@@ -73,8 +73,10 @@ require $blogpath . 'zb_system/admin/admin_top.php';
         <tr>
           <td>排除文件</td>
           <td><?php zbpform::textarea("ignoreList", htmlspecialchars($zbp->Config("mz_BrowserSync")->ignoreList), "90%"); ?></td>
-          <td>需要显示指定，以下仅为示例：
+          <td>
+            需要显示指定，以下仅为示例：
             <pre><?php echo "**/bin/*.*\n**/cache/*.*\n**/usr/*.*"; ?></pre>
+            注：原项目不支持命令行数组什么的；「<a href="https://github.com/wdssmq/browser-sync" target="_blank" title="wdssmq/browser-sync">wdssmq/browser-sync</a>」
           </td>
         </tr>
         <tr>
@@ -93,7 +95,11 @@ require $blogpath . 'zb_system/admin/admin_top.php';
         </tr>
       </table>
     </form>
-    <pre id="mz-bs-pre"><?php echo mz_BrowserSync_BuildConsole(); ?></pre>
+    <table id="mz-bs-pre">
+      <?php echo mz_BrowserSync_BuildConsole(); ?>
+    </table>
+    <p>Browsersync 支持的参数</p>
+    <p><a href="https://browsersync.bootcss.com/docs/options" target="_blank" title="Browsersync 支持的参数">https://browsersync.bootcss.com/docs/options</a></p>
   </div>
 </div>
 <script src="script/script.js"></script>

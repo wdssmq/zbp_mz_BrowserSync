@@ -23,6 +23,14 @@ function mz_BrowserSync_GenFileTypes($strList, $type = "all")
   return implode(", ", $arrRlt);
 }
 
+function mz_BrowserSync_GenIgnoreList($strList)
+{
+  $strList = trim($strList);
+  $arrList = explode("\n", $strList);
+  $arrList = array_map('trim', $arrList);
+  return join(", ",$arrList);
+}
+
 function mz_BrowserSync_BuildConsole()
 {
   global $zbp;
@@ -49,9 +57,20 @@ function mz_BrowserSync_BuildConsole()
   $arrLog["fileTypes-plugin"] = mz_BrowserSync_GenFileTypes($fileTypes, "plugin");
   $arrLog["fileTypes-theme"] = mz_BrowserSync_GenFileTypes($fileTypes, "theme");
   $arrLog["fileTypes"] = mz_BrowserSync_GenFileTypes($fileTypes);
-  $arrLog["ignoreList"] = $ignoreList;
+  $arrLog["ignoreList"] = mz_BrowserSync_GenIgnoreList($ignoreList);
 
-  return strtr($console, $arrLog);
+  $tplTr = "<tr><td><pre>%s</pre></td></tr>";
+
+  $str = strtr($console, $arrLog);
+  $arr = explode("<!-- br -->\n", $str);
+
+  $result = "";
+  foreach ($arr as $key => $val) {
+    $val = trim($val) . "\n ";
+    $result .= sprintf($tplTr, $val);
+  }
+
+  return $result;
 }
 
 function mz_BrowserSync_Path($file, $t = 'path')
