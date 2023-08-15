@@ -27,6 +27,7 @@ if ($act == 'save') {
     }
     $zbp->Config('mz_BrowserSync')->$key = trim($val);
   }
+  mz_BrowserSync_GenUsrConf();
   $zbp->SaveConfig('mz_BrowserSync');
   $zbp->BuildTemplate();
   $zbp->SetHint('good');
@@ -76,7 +77,7 @@ require $blogpath . 'zb_system/admin/admin_top.php';
           <td>
             需要显示指定，以下仅为示例：
             <pre><?php echo "**/bin/*.*\n**/cache/*.*\n**/usr/*.*"; ?></pre>
-            注：原项目不支持命令行数组什么的；「<a href="https://github.com/wdssmq/browser-sync" target="_blank" title="wdssmq/browser-sync">wdssmq/browser-sync</a>」
+            <!-- 注：原项目不支持命令行数组什么的；「<a href="https://github.com/wdssmq/browser-sync" target="_blank" title="wdssmq/browser-sync">wdssmq/browser-sync</a>」 -->
           </td>
         </tr>
         <tr>
@@ -100,6 +101,8 @@ require $blogpath . 'zb_system/admin/admin_top.php';
     </table>
     <p>Browsersync 支持的参数</p>
     <p><a href="https://browsersync.bootcss.com/docs/options" target="_blank" title="Browsersync 支持的参数">https://browsersync.bootcss.com/docs/options</a></p>
+    <p>Browsersync 命令行用法</p><p><a href="https://browsersync.bootcss.com/docs/command-line" target="_blank" title="Browsersync 命令行用法">https://browsersync.bootcss.com/docs/command-line</a></p>
+    <p>注：命令行下 --ignore 参数不支持多个路径项；</p>
   </div>
 </div>
 <script src="script/script.js"></script>

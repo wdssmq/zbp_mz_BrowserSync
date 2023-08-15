@@ -23,18 +23,42 @@ function mz_BrowserSync_GenFileTypes($strList, $type = "all")
   return implode(", ", $arrRlt);
 }
 
-function mz_BrowserSync_GenIgnoreList($strList)
+function mz_BrowserSync_GenIgnoreList($strList, $returnArr = false)
 {
   $strList = trim($strList);
   $arrList = explode("\n", $strList);
   $arrList = array_map('trim', $arrList);
-  return join(", ",$arrList);
+  if ($returnArr) {
+    return $arrList;
+  }
+  return join(", ", $arrList);
 }
 
 function mz_BrowserSync_BuildConsole()
 {
   global $zbp;
+  $tpl = <<<EOF
+
+<!-- br -->
+
+browser-sync start --config 'confPath' --proxy "zbpHost" \
+--cwd "appPath" \
+--files "fileTypes"
+# —— Tips
+EOF;
+
   $console = file_get_contents(mz_BrowserSync_Path('v-console'));
+  $console .= strtr($tpl, array(
+    "Tips" => "只监听插件变化",
+    "fileTypes" => "fileTypes-plugin",
+  ));
+  $console .= strtr($tpl, array(
+    "Tips" => "只监听主题变化",
+    "fileTypes" => "fileTypes-theme",
+  ));
+  $console .= strtr($tpl, array(
+    "Tips" => "全都要",
+  ));
 
   $arrLog = array();
   $arrLog["zbpHost"] = $zbp->host;
@@ -46,6 +70,9 @@ function mz_BrowserSync_BuildConsole()
   } else {
     $arrLog["appPath"] = $usersdir;
   }
+
+  // usr/bs-config.js 拼接
+  $arrLog["confPath"] = $arrLog["appPath"] . "/plugin/mz_BrowserSync/usr/bs-config.js";
 
   // 获取文件类型
   $defFileTypes = file_get_contents(mz_BrowserSync_Path('v-fileTypes'));
@@ -73,6 +100,27 @@ function mz_BrowserSync_BuildConsole()
   return $result;
 }
 
+function mz_BrowserSync_GenUsrConf()
+{
+  global $zbp;
+
+  $dir = mz_BrowserSync_Path('usr');
+  if (!is_dir($dir)) {
+    @mkdir($dir, 0755);
+  }
+
+  $uConfFile = mz_BrowserSync_Path('u-config');
+  $vConfFile = mz_BrowserSync_Path('v-config');
+  $vConf = file_get_contents($vConfFile);
+  $ignoreList = $zbp->Config('mz_BrowserSync')->ignoreList;
+
+  $arrLog = array();
+  $arrLog['["ignoreList"]'] = json_encode(mz_BrowserSync_GenIgnoreList($ignoreList, true));
+
+  $str = strtr($vConf, $arrLog);
+  file_put_contents($uConfFile, $str);
+}
+
 function mz_BrowserSync_Path($file, $t = 'path')
 {
   global $zbp;
@@ -83,6 +131,12 @@ function mz_BrowserSync_Path($file, $t = 'path')
       break;
     case 'v-fileTypes':
       return $result . 'var/fileTypes.txt';
+      break;
+    case 'v-config':
+      return $result . 'var/bs-config.js';
+      break;
+    case 'u-config':
+      return $result . 'usr/bs-config.js';
       break;
     case 'usr':
       return $result . 'usr/';
@@ -100,6 +154,7 @@ function mz_BrowserSync_Path($file, $t = 'path')
 
 function InstallPlugin_mz_BrowserSync()
 {
+  mz_BrowserSync_GenUsrConf();
 }
 
 function UninstallPlugin_mz_BrowserSync()

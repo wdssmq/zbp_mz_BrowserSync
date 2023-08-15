@@ -8,27 +8,3 @@ cnpm install -g browser-sync
 
 #-- 以上命令仅需执行一次 --
 #-- 下边代码可以复制到什么地方，或者用输入法短语、代码编辑器的任务功能等实现快速执行 --
-
-<!-- br -->
-
-browser-sync start --proxy "zbpHost" \
---cwd "appPath" \
---ignore "ignoreList" \
---files "fileTypes-plugin"
-#—— 只监听插件变化
-
-<!-- br -->
-
-browser-sync start --proxy "zbpHost" \
---cwd "appPath" \
---ignore "ignoreList" \
---files "fileTypes-theme"
-#—— 只监听主题变化
-
-<!-- br -->
-
-browser-sync start --proxy "zbpHost" \
---cwd "appPath" \
---ignore "ignoreList" \
---files "fileTypes"
-#—— 全都要
