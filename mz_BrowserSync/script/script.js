@@ -1,6 +1,6 @@
 // alert(bloghost);
 
-$(document).ready(function () {
+$(document).ready(function() {
   const strConsole = $("#mz-bs-pre").html();
   if (strConsole.indexOf(bloghost) === -1) {
     $("#mz-bs-pre").html(strConsole.replace(/\/\/localhost:3000\//g, bloghost));
